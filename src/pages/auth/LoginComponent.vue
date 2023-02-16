@@ -1,8 +1,12 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { Notify } from 'quasar';
+
+
 
 const username = ref('');
 const password = ref('');
+
 
 const images = ref([
   { id: 1, url: 'https://cdn.quasar.dev/img/mountains.jpg', name: "image 1" },
@@ -37,6 +41,7 @@ const changeImage = () => {
     backgroundRepeat: 'no-repeat',
     height: '100vh',
     width: '100vw',
+    transition: 'all 1s ease-in-out',
   };
 };
 
@@ -46,11 +51,21 @@ onMounted(() => {
   setInterval(changeImage, 10000);
   console.log('mounted');
 });
-
 onBeforeUnmount(() => {
   clearInterval(changeImage);
   console.log('unmounted');
 });
+
+const login = () => {
+  console.log(username.value);
+  console.log(password.value)
+  if (username.value.length > 0 && password.value.length > 0) {
+    console.log("login dentro del if");
+    router.push('/home');
+
+  }
+  console.log("login");
+};
 
 
 
@@ -72,7 +87,10 @@ onBeforeUnmount(() => {
                 :rules="[val => val.length > 0 || 'El username es requerido']" />
               <q-input v-model="password" label="Contraseña" filled type="password" hint="Ingrese su contraseña"
                 :rules="[val => val.length > 0 || 'La contraseña es requerida']" />
-              <q-btn class="q-mt-md" color="primary" label="Iniciar sesión" />
+              <q-btn class="q-mt-md justify-end" color="primary" label="Iniciar sesión" @click="login" />
+              <!--     <FormKit type="range" name="strength" id="strength" label="Strength" value="5" validation="min:2|max:9"
+                                                      validation-visibility="live" min="1" max="10" step="1"
+                                                      help="How many strength points should this character have?" /> -->
             </q-form>
           </q-card-section>
         </q-card>
@@ -80,7 +98,7 @@ onBeforeUnmount(() => {
       </q-page>
 
     </q-page-container>
-  </q-layout>
+</q-layout>
 </template>
 <style>
 .containerPage {

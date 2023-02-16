@@ -9,7 +9,8 @@
       <span class="q-ml-sm">NASA</span>
     </q-toolbar-title>
     <div>
-      <q-btn flat round dense icon="login" />
+      <q-btn flat round dense icon="login" @click="() => $router.push('/login')" />
+      />
     </div>
-  </q-toolbar>
+</q-toolbar>
 </template>
