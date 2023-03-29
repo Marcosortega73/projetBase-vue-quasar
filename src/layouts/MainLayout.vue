@@ -11,8 +11,8 @@ import NavBar from "./components/NavBar.vue";
     <q-page-container>
       <router-view />
     </q-page-container>
-    <q-footer elevated>
+    <!--    <q-footer elevated>
       <FooterComponent />
-    </q-footer>
+    </q-footer> -->
   </q-layout>
 </template>
