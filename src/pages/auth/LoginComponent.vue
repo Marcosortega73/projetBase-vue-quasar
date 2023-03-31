@@ -73,9 +73,13 @@ const submitToMailchimp = async () => {
     password: password.value,
   };
 
-  const response = await apiUsers.post("/apiLogin", data);
-
+  /*   const response = await apiUsers.post("/apiLogin", data);
+   */
   console.log(response);
+
+  const response = {
+    status: 200,
+  };
 
   if (response.status == 200) {
     router.push("/dashboard");
