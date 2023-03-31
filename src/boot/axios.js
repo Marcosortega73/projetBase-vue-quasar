@@ -14,7 +14,6 @@ const api = axios.create({
 
 const apiUsers = axios.create({
   baseURL: "http://10.30.0.35:82/api",
-  headers: { "Content-Type": "application/json", Accept: "application/json" },
 });
 
 export default boot(({ app }) => {

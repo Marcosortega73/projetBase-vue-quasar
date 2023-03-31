@@ -1361,23 +1361,23 @@ const openDialogDelete = () => {
                   <q-list style="min-width: 100px">
                     <q-item clickable @click="() => openDialogView(col)">
                       <q-item-section avatar>
-                        <q-icon color="primary" name="visibility" />
+                        <q-icon color="accent" name="visibility" />
                       </q-item-section>
 
                       <q-item-section>Ver</q-item-section>
                     </q-item>
-                    <q-separator />
+
                     <q-item clickable @click="() => openDialogClone(col)">
                       <q-item-section avatar>
-                        <q-icon color="primary" name="edit" />
+                        <q-icon color="accent" name="edit" />
                       </q-item-section>
 
                       <q-item-section>Clonar</q-item-section>
                     </q-item>
-                    <q-separator />
+
                     <q-item clickable @click="() => openDialogDelete()">
                       <q-item-section avatar>
-                        <q-icon color="primary" name="delete" />
+                        <q-icon color="accent" name="delete" />
                       </q-item-section>
 
                       <q-item-section>Borrar</q-item-section>
