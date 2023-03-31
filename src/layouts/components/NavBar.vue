@@ -12,7 +12,7 @@
         round
         dense
         icon="dashboard"
-        @click="() => $router.push('/dashboard')"
+        @click="() => $router.push('/')"
       />
       <q-btn
         flat
