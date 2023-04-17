@@ -3,24 +3,38 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("pages/auth/LoginComponent.vue"),
-    /* children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
-    ] */
+    meta: {
+      requiresAuth: false,
+    },
   },
+
   {
     path: "/",
-    name: "home",
+    beforeEnter: (to, from, next) => {
+      to.fullPath == "/" || to.fullPath == ""
+        ? next({
+            path: "dashboard",
+            replace: true,
+          })
+        : next();
+    },
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
-        path: "/",
+        path: "/dashboard",
         name: "dashboard",
         component: () => import("pages/dashboard/DashboardPage.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/rutinas",
         name: "rutinas",
         component: () => import("pages/dashboard/routines/RoutinesDetails.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },

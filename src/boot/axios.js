@@ -1,34 +1,50 @@
 import { boot } from "quasar/wrappers";
 import axios from "axios";
 
-// Be careful when using SSR for cross-request state pollution
-// due to creating a Singleton instance here;
-// If any client changes this (global) instance, it might be a
-// good idea to move this instance creation inside of the
-// "export default () => {}" function below (which runs individually
-// for each client)
+const getToken = () => {
+  if (!localStorage.getItem("user")) {
+    return "";
+  }
+  const { token } = JSON.parse(localStorage.getItem("user"));
+
+  console.log("tokensss", token);
+  if (token) {
+    return token;
+  } else {
+    return "";
+  }
+};
+
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
-  headers: { "Content-Type": "application/json", Accept: "application/json" },
+  baseURL: "http://localhost:8000/api",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer " + getToken(),
+  },
+  withCredentials: true,
 });
 
+//samctum, crfs token
+const crfsToken = axios.create({
+  baseURL: "http://localhost:8000/",
+  credentials: "include",
+});
 const apiUsers = axios.create({
   baseURL: "http://10.30.0.35:82/api",
+  credentials: "include",
 });
 
 export default boot(({ app }) => {
-  // for use inside Vue files (Options API) through this.$axios and this.$api
-
   app.config.globalProperties.$axios = axios;
-  // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
-  //       so you won't necessarily have to import axios in each vue file
 
   app.config.globalProperties.$api = api;
-  // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
-  //       so you can easily perform requests against your app's API
 
   app.config.globalProperties.$apiUsers = apiUsers;
   // api para conectar con gestion de recursos
+
+  app.config.globalProperties.$crfsToken = crfsToken;
+  // api para conectar con gestion de recursos y obtener el crfs
 });
 
-export { api, apiUsers };
+export { api, apiUsers, crfsToken };

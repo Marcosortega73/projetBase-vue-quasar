@@ -3,6 +3,9 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
+import { useUserStore } from "../../stores/user-store";
+import { API_DATA } from "../../utils/constants";
+
 import { api, apiUsers } from "boot/axios";
 /* import { plugin, defaultConfig } from "@formkit/vue"; */
 
@@ -11,6 +14,8 @@ const username = ref("");
 const password = ref("");
 const formLogin = ref(null);
 const isPwd = ref(true);
+
+const userStore = useUserStore();
 
 //userdata test
 const dataUser = {
@@ -68,19 +73,19 @@ onBeforeUnmount(() => {
 });
 
 const submitToMailchimp = async () => {
+  console.log("submitToMailchimp", API_DATA);
+
   const data = {
     username: username.value,
     password: password.value,
+    sistema: API_DATA?.sistema,
   };
+  //cookies de sanctum
+  /*   await userStore.getSanctumCookie(); */
+  const response = await userStore.login(data);
 
-  /*   const response = await apiUsers.post("/apiLogin", data);
-   */
-
-  const response = {
-    status: 200,
-  };
-
-  if (response.status == 200) {
+  if (response?.success) {
+    userStore.setUser(response);
     router.push("/");
     $q.notify({
       message: "Bienvenido",
@@ -93,7 +98,7 @@ const submitToMailchimp = async () => {
     resetForm();
   } else {
     $q.notify({
-      message: "Credenciales incorrectas",
+      message: response?.message,
       color: "red",
       textColor: "white",
       position: "top",
@@ -110,11 +115,6 @@ const resetForm = () => {
   username.value = "";
   password.value = "";
 };
-
-/* const submitForm = () => {
-  console.log("submit");
-  submitToMailchimp();
-}; */
 </script>
 <template>
   <q-layout>
@@ -127,38 +127,6 @@ const resetForm = () => {
           </q-card-section>
 
           <q-card-section>
-            <!--     <FormKit
-              type="form"
-              id="login"
-              @submit="submitToMailchimp"
-              :actions="false"
-              incomplete-message="Por favor, complete todos los campos"
-            >
-              <FormKit
-                name="username"
-                label="Username"
-                validation="required"
-                locale="es"
-                helper="Ingrese su nombre de usuario"
-                :validation-messages="{
-                  required: 'El nombre de usuario es requerido',
-                }"
-              />
-              <FormKit
-                type="password"
-                name="password"
-                label="Password"
-                validation="required"
-                :validation-messages="{
-                  required: 'El password es requerido',
-                }"
-              />
-              <div class="col flex justify-end">
-                <q-btn color="primary" type="submit" class="full-width"
-                  >Iniciar sesión</q-btn
-                >
-              </div>
-            </FormKit> -->
             <div class="q-pa-md" style="max-width: 400px">
               <q-form
                 @submit.prevent="submitToMailchimp"
